@@ -916,11 +916,22 @@ class Synapses(Group):
         self._connect_called = False
         self.codeobj_class = codeobj_class
 
+        if isinstance(source, SynapticSubgroup):
+            raise TypeError(
+                "A SynapticSubgroup cannot be used as a source for a Synapses "
+                f"object. Trying to connect from {source}."
+            )
         self.source = source
         self.add_dependency(source)
+
         if target is None:
             self.target = self.source
         else:
+            if isinstance(target, SynapticSubgroup):
+                raise TypeError(
+                    "A SynapticSubgroup cannot be used as a target for a Synapses "
+                    f"object. Trying to connect to {target}."
+                )
             self.target = target
             self.add_dependency(target)
 
